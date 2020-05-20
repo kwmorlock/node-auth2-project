@@ -12,12 +12,12 @@ router.post("/register", (req, res) => {
   if (isValid(credentials)) {
     const rounds = process.env.BCRYPT_ROUNDS || 8;
 
-    // hash the password
+    
     const hash = bcryptjs.hashSync(credentials.password, rounds);
 
     credentials.password = hash;
 
-    // save the user to the database
+   
     Users.add(credentials)
       .then(user => {
         res.status(201).json({ data: user });
@@ -38,9 +38,9 @@ router.post("/login", (req, res) => {
   if (isValid(req.body)) {
     Users.findBy({ "u.username": username })
       .then(([user]) => {
-        // compare the password the hash stored in the database
+      
         if (user && bcryptjs.compareSync(password, user.password)) {
-          // produce and send a token that includes the username and the role of the user
+       
           const token = createToken(user);
 
           res.status(200).json({ message: "Welcome to our API", token });
